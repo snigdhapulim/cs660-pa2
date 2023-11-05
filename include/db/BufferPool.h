@@ -4,6 +4,7 @@
 #include <db/Tuple.h>
 #include <db/TransactionId.h>
 #include <db/PagesMap.h>
+#include <queue>
 
 /**
  * BufferPool manages the reading and writing of pages into memory from
