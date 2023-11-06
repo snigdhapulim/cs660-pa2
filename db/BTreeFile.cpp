@@ -5,31 +5,7 @@ using namespace db;
 
 BTreeLeafPage *findLeafPage(TransactionId tid, PagesMap &dirtypages,
                             BTreePageId *pid, Permissions perm, const Field *f) {
-    BTreePage *currentPage = nullptr;
-    BTreeLeafPage *leafPage = nullptr;
 
-    // Start at the root of the B+ tree and traverse the tree
-    while (true) {
-        currentPage = static_cast<BTreePage *>(Database::getBufferPool().getPage( pid));
-
-        // Check if the current page is a leaf page
-        if (currentPage->getType() == BTreePageType::LEAF) {
-            leafPage = static_cast<BTreeLeafPage *>(currentPage);
-            break; // We've reached a leaf page, so break out of the loop
-        }
-
-        // Find the appropriate child page using the IndexPredicate
-        const IndexPredicate indexPredicate(IndexPredicate::Op::EQUAL, f);
-        BTreePageId *childPid = currentPage->getChildId(indexPredicate);
-
-        // Update the current page ID for the next iteration
-        pid = childPid;
-    }
-
-    // Add the dirty pages to the list of dirty pages
-    dirtypages[*pid] = leafPage;
-
-    return leafPage;
 }
 
 
