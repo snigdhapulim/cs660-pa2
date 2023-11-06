@@ -1,16 +1,17 @@
 #include <db/BTreeFile.h>
-#include "db/Database.h"
+#include <db/Database.h>
+#include <cassert>
+#include <unistd.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 
 using namespace db;
 
-BTreeLeafPage *findLeafPage(TransactionId tid, PagesMap &dirtypages,
-                            BTreePageId *pid, Permissions perm, const Field *f) {
-
+BTreeLeafPage *BTreeFile::findLeafPage(TransactionId tid, PagesMap &dirtypages, BTreePageId *pid, Permissions perm,
+                                       const Field *f) {
+    // TODO pa2.2: implement
+    return nullptr;
 }
-
-
-
-
 
 BTreeLeafPage *BTreeFile::splitLeafPage(TransactionId tid, PagesMap &dirtypages, BTreeLeafPage *page, const Field *field) {
     // TODO pa2.3: implement
@@ -48,4 +49,12 @@ void BTreeFile::mergeLeafPages(TransactionId tid, PagesMap &dirtypages, BTreeLea
 void BTreeFile::mergeInternalPages(TransactionId tid, PagesMap &dirtypages, BTreeInternalPage *leftPage,
                                    BTreeInternalPage *rightPage, BTreeInternalPage *parent, BTreeEntry *parentEntry) {
     // TODO pa2.4: implement (BONUS)
+}
+
+BTreeFile::BTreeFile(const char *fname, int key, const TupleDesc &td) : keyField(key), td(td) {
+    fd = open(fname, O_RDWR | O_CREAT | O_APPEND | O_TRUNC, 0644);
+    if (fd == -1) {
+        throw std::runtime_error("open");
+    }
+    tableid = std::hash<std::string>{}(fname);
 }

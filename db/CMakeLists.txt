@@ -28,7 +28,6 @@ add_library(db
         TupleDesc.cpp
         Type.cpp
         Utility.cpp
-        test.cpp
 )
 
 target_include_directories(db PUBLIC ../include)
