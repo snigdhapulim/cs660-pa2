@@ -45,13 +45,8 @@ void BufferPool::flushPage(const PageId *pid) {
     if(it != pages.end()) {
         Page *page = it->second;
         if(page->isDirty()) {
-            // Assuming we have a method to write a page to disk.
-            // Write this page's data to disk.
-            // This would involve filesystem operations.
-            // writePageToDisk(page->getId(), page->getPageData());
             DbFile* file = Database::getCatalog().getDatabaseFile(pid->getTableId());
 
-            // Call the writePage function of the file to write to disk
             file->writePage(page);
             page->markDirty(std::nullopt);
         }
